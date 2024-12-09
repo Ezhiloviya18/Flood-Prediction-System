@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            display: flex;
+            color: aliceblue;
+            background-color: black;
+            height: 10vh;
+            width: 100vw;
+            align-items: center;
+            padding-left: 20px;
+            /* font-family: cursive; */
+        }
+
+        input[type=number] {
+            width: 40%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            padding-left: 30%;
+
+        }
+
+        .row {
+            display: flex;
+
+            /* position: relative; */
+
+        }
+
+        .row:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .left {
+
+            float: left;
+            width: 30%;
+            margin-top: 6px;
+        }
+
+        .right {
+
+            float: right;
+            width: 70%;
+            margin-top: 6px;
+        }
+
+
+        button {
+            background-color: black;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            margin: 10px 200px;
+
+        }
+        .img{
+            display:flex;
+            justify-content: center;
+        }
+
+        @media screen and (max-width: 600px) {
+
+            .left,
+            .right,
+            input[type=number] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <h1>FLOOD PREDICTION</h1>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="left">
+                <label for="input1">Rainfall during previous quarter year(in cm):</label>
+            </div>
+            <div class="right">
+                <input type="number" id="input1" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">
+                <label for="input2">First 10 days in present month(in cm): </label>
+            </div>
+            <div class="right">
+                <input type="number" id="input2" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">
+                <label for="input3">Diff of present and previous month:</label>
+            </div>
+            <div class="right">
+                <input type="number" id="input3" />
+            </div>
+        </div>
+        <input type="hidden" id="state_name" value="{{ state }}">
+        <div class="row">
+            <button onclick="predict()">Predict</button>
+        </div>
+    </div>
+    <div id="predictionResult" style="display:flex; justify-content:center; margin-top: 50px;">
+        <p id="predictionText"></p>
+    </div>
+    <div class="img">
+        <img id="graphImage" src="" alt="Prediction Graph" />
+    </div>
+    <script>
+        function predict() {
+            const input1 = document.getElementById("input1").value;
+            const input2 = document.getElementById("input2").value;
+            const input3 = document.getElementById("input3").value;
+            if (input1 === '' || input2 === '' || input3 === '') {
+                console.error('Input values cannot be empty.');
+                return;
+            }
+
+            const state_name = document.getElementById("state_name").value
+
+            // Make an API request to the backend
+            fetch(`/predict?state_name=${state_name}&input1=${input1}&input2=${input2}&input3=${input3}`)
+                .then(response => response.json())
+                .then(data => {
+                    const predictionText = document.getElementById("predictionText");
+                    if (data.error) {
+                        // Handle errors
+                        predictionText.textContent = `Error: ${data.error}`;
+                    } else {
+                        // Display the prediction result
+                        predictionText.textContent = `Prediction: ${data.prediction}`;
+                    }
+                    document.getElementById("graphImage").src = data.graphPath;
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+
+</html>

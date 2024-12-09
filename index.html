@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flood Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            display: flex;
+            color: aliceblue;
+            background-color: black;
+            height: 10vh;
+            width: 100vw;
+            align-items: center;
+            padding-left: 20px;
+            /* font-family: cursive; */
+        }
+
+        input[type=number] {
+            width: 40%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            padding-left: 30%;
+
+        }
+
+        .row {
+            display: flex;
+
+            /* position: relative; */
+
+        }
+
+        .row:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .left {
+
+            float: left;
+            width: 30%;
+            margin-top: 6px;
+        }
+
+        .right {
+
+            float: right;
+            width: 70%;
+            margin-top: 6px;
+        }
+
+
+        button {
+            background-color: black;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            margin: 10px 200px;
+
+        }
+        .img{
+            display:flex;
+            justify-content: center;
+        }
+
+        @media screen and (max-width: 600px) {
+
+            .left,
+            .right,
+            input[type=number] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>FLOOD PREDICTION</h1>
+    </nav>
+    <br>
+    <h1 >Enter State Name</h1>
+    <form action="/state" method="post">
+        <div class="container">
+            <div class="row">
+                <label for="state_name">State Name:</label>
+                <input type="text" id="state_name" name="state_name" required>
+                <br>
+                
+            </div>
+        </div>
+        <div class="container">
+            <input type="submit" value="Predict" />
+        </div>
+        
+    </form>
+
+</body>
+</html>
